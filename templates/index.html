@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+
+{% block title %}Capture Moments - Professional Photography Booking Platform{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">
+                    <i class="fas fa-camera"></i> Capture Your Perfect Moments
+                </h1>
+                <p class="lead mb-4">
+                    Connect with professional photographers for weddings, events, portraits, and special occasions. 
+                    Our AWS-powered platform ensures seamless booking and exceptional service.
+                </p>
+                <div class="d-flex gap-3">
+                    {% if not session.user_id %}
+                        <a href="{{ url_for('register') }}" class="btn btn-light btn-lg">
+                            <i class="fas fa-user-plus"></i> Get Started
+                        </a>
+                        <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-light btn-lg">
+                            <i class="fas fa-tachometer-alt"></i> Go to Dashboard
+                        </a>
+                        <a href="{{ url_for('photographers') }}" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-users"></i> Browse Photographers
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <i class="fas fa-camera-retro" style="font-size: 15rem; opacity: 0.3;"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="display-5 fw-bold mb-3">Why Choose Capture Moments?</h2>
+                <p class="lead text-muted">Experience the power of cloud-based photography booking</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4 text-center">
+                <div class="card h-100 border-0">
+                    <div class="card-body">
+                        <i class="fas fa-cloud feature-icon"></i>
+                        <h4>AWS-Powered</h4>
+                        <p class="text-muted">
+                            Built on Amazon Web Services for reliability, scalability, and security. 
+                            Your data is safe and accessible 24/7.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 text-center">
+                <div class="card h-100 border-0">
+                    <div class="card-body">
+                        <i class="fas fa-calendar-check feature-icon"></i>
+                        <h4>Easy Booking</h4>
+                        <p class="text-muted">
+                            Simple and intuitive booking system. Check availability, 
+                            compare photographers, and book your session in minutes.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 text-center">
+                <div class="card h-100 border-0">
+                    <div class="card-body">
+                        <i class="fas fa-users feature-icon"></i>
+                        <h4>Professional Network</h4>
+                        <p class="text-muted">
+                            Connect with verified professional photographers specializing 
+                            in weddings, events, portraits, and commercial photography.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="py-5 bg-white">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="display-5 fw-bold mb-3">Our Photography Services</h2>
+                <p class="lead text-muted">Professional photography for every occasion</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-heart text-danger mb-3" style="font-size: 2.5rem;"></i>
+                        <h5>Wedding Photography</h5>
+                        <p class="text-muted">Capture your special day with professional wedding photographers</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-birthday-cake text-warning mb-3" style="font-size: 2.5rem;"></i>
+                        <h5>Event Photography</h5>
+                        <p class="text-muted">Corporate events, parties, and celebrations covered professionally</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-user-circle text-info mb-3" style="font-size: 2.5rem;"></i>
+                        <h5>Portrait Sessions</h5>
+                        <p class="text-muted">Professional headshots, family portraits, and personal photography</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-building text-success mb-3" style="font-size: 2.5rem;"></i>
+                        <h5>Commercial</h5>
+                        <p class="text-muted">Product photography, real estate, and business photography services</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="display-5 fw-bold mb-3">How It Works</h2>
+                <p class="lead text-muted">Simple steps to book your perfect photographer</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-3 text-center">
+                <div class="position-relative">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" 
+                         style="width: 80px; height: 80px; font-size: 2rem; font-weight: bold;">1</div>
+                </div>
+                <h5 class="mt-3">Register & Browse</h5>
+                <p class="text-muted">Create your account and browse our network of professional photographers</p>
+            </div>
+            
+            <div class="col-md-3 text-center">
+                <div class="position-relative">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" 
+                         style="width: 80px; height: 80px; font-size: 2rem; font-weight: bold;">2</div>
+                </div>
+                <h5 class="mt-3">Select & Book</h5>
+                <p class="text-muted">Choose your photographer, select date and package, then submit your booking request</p>
+            </div>
+            
+            <div class="col-md-3 text-center">
+                <div class="position-relative">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" 
+                         style="width: 80px; height: 80px; font-size: 2rem; font-weight: bold;">3</div>
+                </div>
+                <h5 class="mt-3">Confirm Details</h5>
+                <p class="text-muted">Photographer reviews and confirms your booking with final details and pricing</p>
+            </div>
+            
+            <div class="col-md-3 text-center">
+                <div class="position-relative">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" 
+                         style="width: 80px; height: 80px; font-size: 2rem; font-weight: bold;">4</div>
+                </div>
+                <h5 class="mt-3">Capture Moments</h5>
+                <p class="text-muted">Enjoy your photography session and receive your beautiful photos</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold mb-3">Ready to Capture Your Moments?</h2>
+                <p class="lead mb-4">
+                    Join thousands of satisfied customers who trust Capture Moments for their photography needs.
+                </p>
+                {% if not session.user_id %}
+                    <a href="{{ url_for('register') }}" class="btn btn-light btn-lg me-3">
+                        <i class="fas fa-user-plus"></i> Sign Up Now
+                    </a>
+                    <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('photographers') }}" class="btn btn-light btn-lg">
+                        <i class="fas fa-search"></i> Find Photographers
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

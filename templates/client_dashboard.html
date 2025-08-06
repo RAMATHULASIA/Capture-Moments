@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block title %}Client Dashboard - Capture Moments{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Welcome Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h2><i class="fas fa-user"></i> Welcome back, {{ session.username }}!</h2>
+                    <p class="mb-0">Ready to capture your next special moment? Browse photographers and book your session.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="fas fa-search text-primary mb-3" style="font-size: 2.5rem;"></i>
+                    <h5>Find Photographers</h5>
+                    <p class="text-muted">Browse our network of professional photographers</p>
+                    <a href="{{ url_for('photographers') }}" class="btn btn-primary">
+                        <i class="fas fa-search"></i> Browse
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="fas fa-calendar-plus text-success mb-3" style="font-size: 2.5rem;"></i>
+                    <h5>Book Session</h5>
+                    <p class="text-muted">Schedule your photography session</p>
+                    <a href="{{ url_for('photographers') }}" class="btn btn-success">
+                        <i class="fas fa-calendar-plus"></i> Book Now
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="fas fa-list-alt text-info mb-3" style="font-size: 2.5rem;"></i>
+                    <h5>My Bookings</h5>
+                    <p class="text-muted">View and manage your bookings</p>
+                    <a href="#" onclick="alert('My Bookings feature coming soon!')" class="btn btn-info">
+                        <i class="fas fa-list-alt"></i> View All
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="fas fa-comment text-warning mb-3" style="font-size: 2.5rem;"></i>
+                    <h5>Feedback</h5>
+                    <p class="text-muted">Share your experience with us</p>
+                    <a href="#" onclick="alert('Feedback feature coming soon!')" class="btn btn-warning">
+                        <i class="fas fa-comment"></i> Give Feedback
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Featured Photographers -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4><i class="fas fa-star"></i> Featured Photographers</h4>
+                </div>
+                <div class="card-body">
+                    {% if photographers %}
+                        <div class="row">
+                            {% for photographer in photographers[:6] %}
+                            <div class="col-md-6 mb-3">
+                                <div class="card border">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <i class="fas fa-user-circle text-primary" style="font-size: 3rem;"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h6 class="mb-1">{{ photographer.name }}</h6>
+                                                <p class="text-muted mb-1">
+                                                    <i class="fas fa-camera"></i> {{ photographer.specialization }}
+                                                </p>
+                                                <p class="text-muted mb-2">
+                                                    <i class="fas fa-map-marker-alt"></i> {{ photographer.location }}
+                                                </p>
+                                                <div class="d-flex gap-2">
+                                                    <a href="#" onclick="alert('Photographer profile feature coming soon!')"
+                                                       class="btn btn-sm btn-outline-primary">View Profile</a>
+                                                    <a href="#" onclick="alert('Booking feature coming soon!')"
+                                                       class="btn btn-sm btn-primary">Book Now</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="text-center">
+                            <a href="{{ url_for('photographers') }}" class="btn btn-primary">
+                                <i class="fas fa-users"></i> View All Photographers
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-camera text-muted mb-3" style="font-size: 3rem;"></i>
+                            <h5 class="text-muted">No photographers available</h5>
+                            <p class="text-muted">Check back later for available photographers.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Bookings -->
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4><i class="fas fa-clock"></i> Recent Bookings</h4>
+                </div>
+                <div class="card-body">
+                    {% if user_bookings %}
+                        {% for booking in user_bookings[:5] %}
+                        <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+                            <div class="flex-shrink-0">
+                                <span class="badge status-{{ booking.booking_status }}">
+                                    {{ booking.booking_status.title() }}
+                                </span>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="mb-1">{{ booking.event_type }}</h6>
+                                <p class="text-muted mb-0">
+                                    <i class="fas fa-calendar"></i> {{ booking.event_date }}
+                                </p>
+                                <p class="text-muted mb-0">
+                                    <i class="fas fa-map-marker-alt"></i> {{ booking.location }}
+                                </p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <div class="text-center">
+                            <a href="#" onclick="alert('My Bookings feature coming soon!')" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-list"></i> View All Bookings
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-calendar-times text-muted mb-3" style="font-size: 2.5rem;"></i>
+                            <h6 class="text-muted">No bookings yet</h6>
+                            <p class="text-muted mb-3">Start by booking your first photography session!</p>
+                            <a href="{{ url_for('photographers') }}" class="btn btn-sm btn-primary">
+                                <i class="fas fa-plus"></i> Book Now
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

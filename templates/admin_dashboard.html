@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Capture Moments{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Welcome Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-warning text-dark">
+                <div class="card-body">
+                    <h2><i class="fas fa-user-shield"></i> Admin Dashboard</h2>
+                    <p class="mb-0">Welcome back, {{ session.username }}! Monitor and manage the Capture Moments platform.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>{{ total_bookings }}</h4>
+                            <p class="mb-0">Total Bookings</p>
+                        </div>
+                        <div>
+                            <i class="fas fa-calendar-check fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>{{ booking_stats.confirmed }}</h4>
+                            <p class="mb-0">Confirmed Bookings</p>
+                        </div>
+                        <div>
+                            <i class="fas fa-check-circle fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-warning text-dark">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>{{ booking_stats.pending }}</h4>
+                            <p class="mb-0">Pending Bookings</p>
+                        </div>
+                        <div>
+                            <i class="fas fa-clock fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>{{ sentiment_stats.positive + sentiment_stats.negative + sentiment_stats.neutral }}</h4>
+                            <p class="mb-0">Total Feedback</p>
+                        </div>
+                        <div>
+                            <i class="fas fa-comments fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Recent Bookings -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4><i class="fas fa-list-alt"></i> Recent Bookings</h4>
+                </div>
+                <div class="card-body">
+                    {% if bookings %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Event Type</th>
+                                        <th>Date</th>
+                                        <th>Location</th>
+                                        <th>Status</th>
+                                        <th>Client</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for booking in bookings[:10] %}
+                                    <tr>
+                                        <td>
+                                            <i class="fas fa-camera text-primary"></i>
+                                            {{ booking.event_type.title() }}
+                                        </td>
+                                        <td>{{ booking.event_date }}</td>
+                                        <td>{{ booking.location }}</td>
+                                        <td>
+                                            <span class="badge status-{{ booking.booking_status }}">
+                                                {{ booking.booking_status.title() }}
+                                            </span>
+                                        </td>
+                                        <td>{{ booking.client_name }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-calendar-times text-muted mb-3" style="font-size: 3rem;"></i>
+                            <h5 class="text-muted">No bookings yet</h5>
+                            <p class="text-muted">Bookings will appear here as users make reservations.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Sentiment Analysis -->
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4><i class="fas fa-chart-pie"></i> Sentiment Analysis</h4>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="sentiment-positive">
+                                <i class="fas fa-smile"></i> Positive
+                            </span>
+                            <span class="badge bg-success">{{ sentiment_stats.positive }}</span>
+                        </div>
+                        <div class="progress mb-3">
+                            <div class="progress-bar bg-success" style="width: {% if sentiment_stats.positive + sentiment_stats.negative + sentiment_stats.neutral > 0 %}{{ (sentiment_stats.positive / (sentiment_stats.positive + sentiment_stats.negative + sentiment_stats.neutral)) * 100 }}{% else %}0{% endif %}%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="sentiment-neutral">
+                                <i class="fas fa-meh"></i> Neutral
+                            </span>
+                            <span class="badge bg-secondary">{{ sentiment_stats.neutral }}</span>
+                        </div>
+                        <div class="progress mb-3">
+                            <div class="progress-bar bg-secondary" style="width: {% if sentiment_stats.positive + sentiment_stats.negative + sentiment_stats.neutral > 0 %}{{ (sentiment_stats.neutral / (sentiment_stats.positive + sentiment_stats.negative + sentiment_stats.neutral)) * 100 }}{% else %}0{% endif %}%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="sentiment-negative">
+                                <i class="fas fa-frown"></i> Negative
+                            </span>
+                            <span class="badge bg-danger">{{ sentiment_stats.negative }}</span>
+                        </div>
+                        <div class="progress mb-3">
+                            <div class="progress-bar bg-danger" style="width: {% if sentiment_stats.positive + sentiment_stats.negative + sentiment_stats.neutral > 0 %}{{ (sentiment_stats.negative / (sentiment_stats.positive + sentiment_stats.negative + sentiment_stats.neutral)) * 100 }}{% else %}0{% endif %}%"></div>
+                        </div>
+                    </div>
+                    
+                    {% if negative_feedback %}
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <strong>{{ negative_feedback|length }}</strong> negative feedback items need attention
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4><i class="fas fa-tools"></i> Quick Actions</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <a href="#" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-users"></i><br>
+                                Manage Users
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="#" class="btn btn-outline-success w-100">
+                                <i class="fas fa-camera"></i><br>
+                                Manage Photographers
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="#" class="btn btn-outline-info w-100">
+                                <i class="fas fa-chart-bar"></i><br>
+                                View Analytics
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="#" class="btn btn-outline-warning w-100">
+                                <i class="fas fa-cog"></i><br>
+                                System Settings
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
